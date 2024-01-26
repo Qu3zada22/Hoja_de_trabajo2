@@ -1,16 +1,20 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("datos.txt"))) {
-            String line;
-            PostfixCalculator calculator = new PostfixCalculator();
+    public static List<String> obtenerExpresiones(String ruta) throws IOException {
+        LectorArchivo lector = new LectorArchivo(ruta);
+        return lector.leerExpresionesPrefix();
+    }
 
-            while ((line = reader.readLine()) != null) {
-                int result = calculator.evaluateExpression(line);
-                System.out.println("Resultado: " + result);
+    public static void main(String[] args) {
+        String rutaArchivo = "datos.txt";
+        try {
+            List<String> expresiones = obtenerExpresiones(rutaArchivo);
+            PostfixCalculator calculator = new PostfixCalculator();
+            for (String expresion : expresiones) {
+                int resultado = calculator.evaluate(expresion);
+                System.out.println("Resultado de la expresión " + expresion + ": " + resultado);
             }
         } catch (IOException e) {
             e.printStackTrace();

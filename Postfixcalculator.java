@@ -1,46 +1,47 @@
 public class PostfixCalculator {
-    private VectorStack<Integer> stack;
+    private Stack<Integer> stack;
 
     public PostfixCalculator() {
-        stack = new VectorStack<>();
+        stack = new Stack<>();
     }
 
-    public int evaluateExpression(String postfixExpression) {
-        String[] tokens = postfixExpression.split("\\s+");
-        
+    public int evaluate(String expression) {
+        String[] tokens = expression.split("\\s+");
+
         for (String token : tokens) {
-            if (isNumeric(token)) {
+            if (token.matches("\\d+")) {
                 stack.push(Integer.parseInt(token));
             } else {
-                int operandB = stack.pop();
-                int operandA = stack.pop();
-                int result = performOperation(operandA, operandB, token);
+                int operand2 = stack.pop();
+                int operand1 = stack.pop();
+                int result;
+                switch (token) {
+                    case "+":
+                        result = operand1 + operand2;
+                        break;
+                    case "-":
+                        result = operand1 - operand2;
+                        break;
+                    case "*":
+                        result = operand1 * operand2;
+                        break;
+                    case "/":
+                        if (operand2 == 0) {
+                            throw new ArithmeticException("Division by zero");
+                        }
+                        result = operand1 / operand2;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid operator: " + token);
+                }
                 stack.push(result);
             }
         }
 
-        return stack.pop();
-    }
-
-    private boolean isNumeric(String str) {
-        return str.matches("-?\\d+");
-    }
-
-    private int performOperation(int operandA, int operandB, String operator) {
-        switch (operator) {
-            case "+":
-                return operandA + operandB;
-            case "-":
-                return operandA - operandB;
-            case "*":
-                return operandA * operandB;
-            case "/":
-                if (operandB == 0) {
-                    throw new ArithmeticException("División entre cero");
-                }
-                return operandA / operandB;
-            default:
-                throw new IllegalArgumentException("Operador no válido: " + operator);
+        if (stack.isEmpty()) {
+            throw new IllegalArgumentException("Invalid expression");
         }
+
+        return stack.pop();
     }
 }

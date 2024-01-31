@@ -6,7 +6,7 @@ import java.util.Stack;
  * @author Jonathan Díaz
  * @author Anggie Quezada
  */
-public class PostfixCalculator {
+public class PostfixCalculator implements CalculadoraPOSTFIX{
     private Stack<Integer> stack;
     private int size;
 
@@ -22,11 +22,11 @@ public class PostfixCalculator {
      * Evalúa una expresión postfix y realiza el cálculo.
      * 
      * @param expression Expresión postfix a evaluar.
-     * @return True si la expresión es válida y se calcula correctamente, false en
-     *         caso contrario.
+     * @return El resultado
      */
-    public Boolean evaluate(String expression) {
-        String[] characters = expression.split("\\s+");
+    @Override
+    public int calcular(String notacion) {
+        String[] characters = notacion.split("\\s+");
 
         try {
             for (String character : characters) {
@@ -35,7 +35,7 @@ public class PostfixCalculator {
                     size++;
                 } else if (isOperator(character)) {
                     if (size < 2) {
-                        return false;
+                        throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
                     }
                     int operand2 = stack.pop();
                     int operand1 = stack.pop();
@@ -52,8 +52,7 @@ public class PostfixCalculator {
                             break;
                         case "/":
                             if (operand2 == 0) {
-                                System.out.println("Error, división por cero en la expresión: " + expression);
-                                return false;
+                                throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
                             }
                             result = operand1 / operand2;
                             break;
@@ -63,37 +62,18 @@ public class PostfixCalculator {
                     stack.push(result);
                     size--;
                 } else {
-                    return false;
+                    throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
                 }
             }
-            if (size != 1 || !stack.isEmpty()) {
-                System.out.println("Error, la sintaxis de la operación es incorrecta en la expresión: " + expression);
-                return false;
+            if (stack.isEmpty() || size != 1) {
+                throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
+            }
+            else{
+                return stack.pop();
             }
         } catch (Exception e) {
-            System.out.println("Error, la sintaxis de la operación es incorrecta en la expresión: " + expression);
-            return false;
-        }
-        if (size == 1) {
-            return true;
-        } else {
-            System.out.println("Error, la sintaxis de la operación es incorrecta");
-            return false;
-        }
-    }
-
-    /**
-     * Obtiene el resultado del cálculo de la expresión postfix.
-     * 
-     * @return Resultado del cálculo.
-     * @throws IllegalArgumentException Si la sintaxis de la operación es
-     *                                  incorrecta.
-     */
-    public int returnResult() {
-        if (stack.isEmpty() || size != 1) {
             throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
         }
-        return stack.pop();
     }
 
     private boolean isOperator(String character) {

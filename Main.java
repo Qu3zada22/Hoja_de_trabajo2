@@ -34,13 +34,10 @@ public class Main {
             List<String> expresiones = obtenerExpresiones(rutaArchivo);
             for (String expresion : expresiones) {
                 PostfixCalculator calculator = new PostfixCalculator();
-                Boolean flag = calculator.evaluate(expresion);
-                if (flag) {
-                    int resultado = calculator.returnResult();
-                    System.out.println("Resultado de la expresión " + expresion + ": " + resultado);
+                int resultado = calculator.calcular(expresion);
+                System.out.println("Resultado de la expresión " + expresion + ": " + resultado);
                 }
-            }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error de sintaxis al leer el archivo.");
         }
     }

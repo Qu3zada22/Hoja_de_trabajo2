@@ -1,14 +1,30 @@
 import java.util.Stack;
 
+/**
+ * Clase que realiza el cálculo de expresiones en formato postfix.
+ * 
+ * @author Jonathan Díaz
+ * @author Anggie Quezada
+ */
 public class PostfixCalculator {
     private Stack<Integer> stack;
     private int size;
 
+    /**
+     * Constructor de la calculadora postfix.
+     */
     public PostfixCalculator() {
         stack = new Stack<>();
         size = 0;
     }
 
+    /**
+     * Evalúa una expresión postfix y realiza el cálculo.
+     * 
+     * @param expression Expresión postfix a evaluar.
+     * @return True si la expresión es válida y se calcula correctamente, false en
+     *         caso contrario.
+     */
     public Boolean evaluate(String expression) {
         String[] characters = expression.split("\\s+");
 
@@ -62,6 +78,13 @@ public class PostfixCalculator {
         }
     }
 
+    /**
+     * Obtiene el resultado del cálculo de la expresión postfix.
+     * 
+     * @return Resultado del cálculo.
+     * @throws IllegalArgumentException Si la sintaxis de la operación es
+     *                                  incorrecta.
+     */
     public int returnResult() {
         if (stack.isEmpty() || size != 1) {
             throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");

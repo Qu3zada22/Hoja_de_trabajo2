@@ -11,13 +11,16 @@ public class Main {
         String rutaArchivo = "datos.txt";
         try {
             List<String> expresiones = obtenerExpresiones(rutaArchivo);
-            PostfixCalculator calculator = new PostfixCalculator();
             for (String expresion : expresiones) {
-                int resultado = calculator.evaluate(expresion);
-                System.out.println("Resultado de la expresión " + expresion + ": " + resultado);
+                PostfixCalculator calculator = new PostfixCalculator();
+                Boolean flag = calculator.evaluate(expresion);
+                if (flag) {
+                    int resultado = calculator.returnResult();
+                    System.out.println("Resultado de la expresión " + expresion + ": " + resultado);
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error de sintaxis.");
         }
     }
 }

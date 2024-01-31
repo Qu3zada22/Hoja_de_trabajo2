@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class PostfixCalculator {
     private Stack<Integer> stack;
     private int size;
@@ -7,7 +9,7 @@ public class PostfixCalculator {
         size = 0;
     }
 
-    public int evaluate(String expression) {
+    public Boolean evaluate(String expression) {
         String[] characters = expression.split("\\s+");
 
         try {
@@ -15,7 +17,10 @@ public class PostfixCalculator {
                 if (character.matches("\\d+")) {
                     stack.push(Integer.parseInt(character));
                     size++;
-                } else {
+                } else if (isOperator(character)) {
+                    if (size < 2) {
+                        throw new IllegalArgumentException("Not enough operands for operator: " + character);
+                    }
                     int operand2 = stack.pop();
                     int operand1 = stack.pop();
                     int result;
@@ -31,7 +36,8 @@ public class PostfixCalculator {
                             break;
                         case "/":
                             if (operand2 == 0) {
-                                throw new ArithmeticException("Division by zero");
+                                System.out.println("Error, división por cero en la expresión: " + expression);
+                                return false;
                             }
                             result = operand1 / operand2;
                             break;
@@ -40,11 +46,30 @@ public class PostfixCalculator {
                     }
                     stack.push(result);
                     size--;
+                } else {
+                    return false;
                 }
             }
-            return stack.pop();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Exprecion invalida: " + e.getMessage());
+            System.out.println("Error, la sintaxis de la operación es incorrecta en la expresión: " + expression);
+            return false;
         }
+        if (size == 1) {
+            return true;
+        } else {
+            System.out.println("Error, la sintaxis de la operación es incorrecta");
+            return false;
+        }
+    }
+
+    public int returnResult() {
+        if (stack.isEmpty() || size != 1) {
+            throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
+        }
+        return stack.pop();
+    }
+
+    private boolean isOperator(String character) {
+        return character.equals("+") || character.equals("-") || character.equals("*") || character.equals("/");
     }
 }

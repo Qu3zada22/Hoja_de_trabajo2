@@ -35,7 +35,7 @@ public class PostfixCalculator {
                     size++;
                 } else if (isOperator(character)) {
                     if (size < 2) {
-                        throw new IllegalArgumentException("Not enough operands for operator: " + character);
+                        return false;
                     }
                     int operand2 = stack.pop();
                     int operand1 = stack.pop();
@@ -58,13 +58,17 @@ public class PostfixCalculator {
                             result = operand1 / operand2;
                             break;
                         default:
-                            throw new IllegalArgumentException("Invalid operator: " + character);
+                            throw new IllegalArgumentException("Operador invalido: " + character);
                     }
                     stack.push(result);
                     size--;
                 } else {
                     return false;
                 }
+            }
+            if (size != 1 || !stack.isEmpty()) {
+                System.out.println("Error, la sintaxis de la operación es incorrecta en la expresión: " + expression);
+                return false;
             }
         } catch (Exception e) {
             System.out.println("Error, la sintaxis de la operación es incorrecta en la expresión: " + expression);

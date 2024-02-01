@@ -6,7 +6,7 @@ import java.util.Stack;
  * @author Jonathan Díaz
  * @author Anggie Quezada
  */
-public class PostfixCalculator implements CalculadoraPOSTFIX{
+public class PostfixCalculator implements CalculadoraPOSTFIX {
     private Stack<Integer> stack;
     private int size;
 
@@ -67,8 +67,7 @@ public class PostfixCalculator implements CalculadoraPOSTFIX{
             }
             if (stack.isEmpty() || size != 1) {
                 throw new IllegalArgumentException("Error, la sintaxis de la operación es incorrecta");
-            }
-            else{
+            } else {
                 return stack.pop();
             }
         } catch (Exception e) {

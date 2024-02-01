@@ -12,32 +12,32 @@ class PostfixCalculatorTest {
 
     void testEvaluateInvalidExpression() {
         PostfixCalculator calculator = new PostfixCalculator();
-        assertEquals(IllegalArgumentException.class, calculator.calcular("2 +"));
-        assertEquals(IllegalArgumentException.class, calculator.calcular("2 3 + +"));
-        assertEquals(IllegalArgumentException.class, calculator.calcular("2 0 /"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("2 +"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("2 3 + +"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("2 0 /"));
     }
 
     @Test
     void testEvaluateDivisionByZero() {
         PostfixCalculator calculator = new PostfixCalculator();
-        assertEquals(IllegalArgumentException.class, calculator.calcular("4 0 /"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("4 0 /"));
     }
 
     @Test
     void testEvaluateInvalidSyntax() {
         PostfixCalculator calculator = new PostfixCalculator();
-        assertEquals(IllegalArgumentException.class, calculator.calcular("2 3a +"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("2 3a +"));
     }
 
     @Test
     void testEvaluateAndReturnResultInvalidOperator() {
         PostfixCalculator calculator = new PostfixCalculator();
-        assertEquals(IllegalArgumentException.class, calculator.calcular("2 3 $"));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular("2 3 $"));
     }
 
     @Test
     void testEvaluateAndReturnResultEmptyExpression() {
         PostfixCalculator calculator = new PostfixCalculator();
-        assertEquals(IllegalArgumentException.class, calculator.calcular(""));
+        assertThrows(IllegalArgumentException.class, () -> calculator.calcular(""));
     }
 }
